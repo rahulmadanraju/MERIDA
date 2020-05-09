@@ -23,6 +23,7 @@ def bart_summarizer(data):
 def bert_summarizer(data):
     summarizer_bert = Summarizer()
     summary_bert = summarizer_bert(data, min_length=30, max_length = 140)
+    print('Bert for Text - Summarization')
     summary = ''.join(summary_bert)
     rouge_scores = rouge.get_scores(summary, data)
     return summary, rouge_scores
@@ -38,6 +39,7 @@ def xlnet_summarizer(data):
 
 def gpt2_summarizer(data):
     summarizer_gpt2 = TransformerSummarizer(transformer_type="GPT2",transformer_model_key="gpt2-medium")
+    print('GPT2 for Text - Summarization')
     summary_gpt2 = summarizer_gpt2(data, min_length=20, max_length = 140)
     summary = ''.join(summary_gpt2)
     rouge_scores = rouge.get_scores(summary, data)
@@ -50,16 +52,3 @@ def T5_summarizer(data):
     summary = summary_t5[0]['summary_text']
     rouge_scores = rouge.get_scores(summary, data)
     return summary, rouge_scores
-    
-
-
-data = '''
-Traditional electronics are connected with wires to the power supply to switches and sensors. Over the time the amount of sensors and IoT devices is growing so there is no more space in future for all the cables needed for the connections.
-MID (molded interconnect devices) opens the possibility to place tracks directly on the surface of plastic parts.
-MID must be further developed for our own applications. E.g. printing in plastic housing parts.
-We expect that this will be the enabler for much more sensors in our tools. 5 years ago the MID technology was not competitive vs. classical cabling/wiring. With increasing electronics, cabling space gets rare. What technologies and companies exist on the market to create MID? Interesting technologies could be laser activation, galvanization, deformable sheets.
-'''
-
-# summary,scores = bart_summarizer(data)
-# print(summary)
-# print(scores)
