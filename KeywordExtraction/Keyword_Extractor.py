@@ -14,10 +14,12 @@ nltk.download('wordnet')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import RegexpTokenizer
-#nltk.download('wordnet') 
+from nltk.corpus.reader.wordnet import WordNetError
+nltk.download('wordnet') 
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.sparse import coo_matrix
+from nltk.corpus import wordnet
 
 stop_words = set(stopwords.words("english"))
 
@@ -79,17 +81,28 @@ def extract_topn_from_vector(feature_names, sorted_items, topn=10):
     for idx in range(len(feature_vals)):
         results[feature_vals[idx]]=score_vals[idx]
     
-    return results
+    return results, feature_vals
+
+# KE, feature_names = tfidf_Data(dataset, 0, 1000, 1,3)
+# sorted_items = sort_coo(KE.tocoo())
+# KE = extract_topn_from_vector(feature_names,sorted_items,10)
+# len(KE)
+# print(KE)
 
 
-dataset = '''
-Traditional electronics are connected with wires to the power supply to switches and sensors. Over the time the amount of sensors and IoT devices is growing so there is no more space in future for all the cables needed for the connections.
-MID (molded interconnect devices) opens the possibility to place tracks directly on the surface of plastic parts.
-MID must be further developed for our own applications. E.g. printing in plastic housing parts.
-We expect that this will be the enabler for much more sensors in our tools. 5 years ago the MID technology was not competitive vs. classical cabling/wiring. With increasing electronics, cabling space gets rare. What technologies and companies exist on the market to create MID? Interesting technologies could be laser activation, galvanization, deformable sheets.
-'''
+def Synonym_Keywords_Generation(data):
+    synonyms = []
+    # antonyms = []
+    KE, feature_names = tfidf_Data(data, 0, 1000, 1,3)
+    sorted_items = sort_coo(KE.tocoo())
+    KE, features = extract_topn_from_vector(feature_names,sorted_items,10)
+    for i in range(len(features)):
+        for syn in wordnet.synsets(features[i]):
+	        for l in syn.lemmas():
+		        synonyms.append(l.name())
+    #            if l.antonyms():
+	#		    	antonyms.append(l.antonyms()[0].name())
+    return KE, features, synonyms
 
-KE, feature_names = tfidf_Data(dataset, 0, 1000, 1,3)
-sorted_items = sort_coo(KE.tocoo())
-KE = extract_topn_from_vector(feature_names,sorted_items,10)
-print(KE)
+
+
