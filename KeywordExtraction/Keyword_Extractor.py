@@ -9,13 +9,13 @@ import re
 import nltk
 import pandas as pd
 import re
-nltk.download('stopwords')
-nltk.download('wordnet')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus.reader.wordnet import WordNetError
-nltk.download('wordnet') 
+# nltk.download('wordnet') 
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from scipy.sparse import coo_matrix

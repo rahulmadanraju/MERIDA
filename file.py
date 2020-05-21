@@ -21,7 +21,11 @@ We expect that this will be the enabler for much more sensors in our tools. 5 ye
 corrected_data = SpellCheck2(data)
 print("Did you mean: " + corrected_data)
 
-
+# Keyword Extraction
+word_scores, key_words, synonyms = Synonym_Keywords_Generation(data)
+print(word_scores)
+print(key_words)
+print(synonyms)
 
 # summarization
 summary,scores = bart_summarizer(data)
@@ -44,11 +48,7 @@ print(scores)
 #print(summary)
 #print(scores)
 
-# Keyword Extraction
-word_scores, key_words, synonyms = Synonym_Keywords_Generation(data)
-print(word_scores)
-print(key_words)
-print(synonyms)
+
 
 
 

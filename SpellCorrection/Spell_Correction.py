@@ -8,25 +8,6 @@ from spellchecker import SpellChecker
 from termcolor import colored
 
 
-def SpellCheck(data):
-    Spell_Words = []
-    spell = SpellChecker()
-    words = spell.split_words(words)
-    for i in data.split_words(' '):
-        w = Word(i)
-        spell.word_frequency.load_words(['molded','.', '(',')'])
-        words = spell.correction(w)
-        if words != w:
-            words = colored(words, 'blue')
-
-        #spell_word = ' '.join(words)
-        Spell_Words.append(words)
-
-    # print(Spell_Words)
-    Corrected_Words = TreebankWordDetokenizer().detokenize(Spell_Words)
-    return Corrected_Words
-
-
 def SpellCheck2(data):
     spell = SpellChecker()
     Spell_Words = []
@@ -37,9 +18,8 @@ def SpellCheck2(data):
     for word in words_split:
         spell.word_frequency.load_words(['molded','.', '(',')'])
         correction = spell.correction(word)
-        print(correction)
-        if correction != word:  
-            correction = colored(correction, 'blue')
+        # if correction != word:  
+        #     correction = colored(correction)
         Spell_Words.append(correction)
     
     Corrected_Words = TreebankWordDetokenizer().detokenize(Spell_Words)
