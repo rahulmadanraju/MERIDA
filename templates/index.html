@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>Rokin</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+</head>
+
+<body>
+  <div>
+    <h1 >Rokin Query Tool</h1>
+  </div>
+  <div> 
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+      <div>
+        <textarea name = 'rawtext' cols="98" rows="5" placeholder = "Enter the problem statement here" required = True></textarea>
+        <button type="submit" class="btn btn-primary btn-block btn-small">Predict</button>
+      </div>
+    </form>
+
+    <br>
+    <br>
+    {{prediction_Spell}}
+    <br>
+    {{prediction_Results[0]}}
+    <p>
+    {{prediction_Results[1]}}
+    <p>
+    {{prediction_Results[2]}}
+
+
+  </div>
+
+
+</body>
+</html>
