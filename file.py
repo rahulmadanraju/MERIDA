@@ -18,8 +18,8 @@ MID must be further developed for our own applications. E.g. printing in plastc 
 We expect that this will be the enabler for much more sensors in our tools. 5 years ago the MID technology was not competitive vs. classical cabling/wiring. With increasing electronics, cabling space gets rare. What technologies and companies exist on the market to create MID? Interesting technologies could be laser activation, galvanization, deformable sheets.
 '''
 # spell check
-corrected_data = SpellCheck2(data)
-print("Did you mean: " + corrected_data)
+#corrected_data = SpellCheck2(data)
+#print("Did you mean: " + corrected_data)
 
 
 
@@ -28,17 +28,17 @@ summary,scores = bart_summarizer(data)
 print(summary)
 print(scores)
 
-summary,scores = bert_summarizer(data)
-print(summary)
-print(scores)
+# summary,scores = bert_summarizer(data)
+# print(summary)
+# print(scores)
 
-summary,scores = xlnet_summarizer(data)
-print(summary)
-print(scores)
+# summary,scores = xlnet_summarizer(data)
+# print(summary)
+#print(scores)
 
-summary,scores = gpt2_summarizer(data)
-print(summary)
-print(scores)
+#summary,scores = gpt2_summarizer(data)
+#print(summary)
+#print(scores)
 
 #summary,scores = T5_summarizer(data)
 #print(summary)
@@ -47,9 +47,13 @@ print(scores)
 # Keyword Extraction
 word_scores, key_words, synonyms = Synonym_Keywords_Generation(data)
 print(word_scores)
+#key_words = str(key_words)[:-2]
 print(key_words)
 print(synonyms)
 
+lst = [summary]
+lst = lst + key_words
+print(lst)
 
 
 # Question Generation
