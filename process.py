@@ -17,7 +17,7 @@ def processing_combined (query_data):
     title_list = [] # title
     url_list = [] # url 
     domain_list = [] # domain
-    for i in tqdm(range(0,len_text)):
+    for i in tqdm(range(1,len_text)):
         snippet = df_dict["snippet"][i].split("\n")
         snippet_description = df_dict["snippet"][i]
         title = df_dict["title"][i]

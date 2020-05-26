@@ -25,6 +25,7 @@ frame = frame[selectColumns]
 frame = frame.rename(columns={"pageUrl": "url", "text": "snippet", "siteName": "domain"})
 frame = frame.drop(["date"], axis=1)
 frame = frame.head(10)
+frame = frame.drop([0])
 
 """ importing the data from google_data """
 

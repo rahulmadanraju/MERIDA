@@ -28,12 +28,12 @@ def predict_results(query_input):
 
     df_sentences_list = [str(d) for d in tqdm(df_sentences_list)]
     corpus = df_sentences_list
-    queries = [query_input]
+    queries = query_input
     query_embeddings = embedder.encode(queries,show_progress_bar=True)
 
     full_data = pd.read_csv("Processed_Full.csv", index_col=0)
     # Find the closest 5 sentences of the corpus for each query sentence based on cosine similarity
-    closest_n = 5
+    closest_n = 1
     final_results = []
     # print("\nTop 10 most similar sentences in corpus:")
     for query, query_embedding in zip(queries, query_embeddings):
@@ -86,18 +86,44 @@ def predict():
     #final_features = [np.array(int_features)]
     rawtext = request.form['rawtext']
     prediction_Spell = SpellCheck2(rawtext)
-    # prediction_Summ, Summ_Scores = bart_summarizer(prediction_Spell)
-    # scores , prediction_KeyWord,prediction_Synonyms = Synonym_Keywords_Generation(prediction_Spell)
+    condition = request.form.get('condition')
+    if condition:
+        return render_template('index.html',ctext=rawtext, prediction_Spell='Did you mean: {}'.format(prediction_Spell))
+    else:
+        rawtext = request.form['rawtext']
+        prediction_Spell = SpellCheck2(rawtext)
+        prediction_Summ, Summ_Scores = bart_summarizer(prediction_Spell)
+        scores , prediction_KeyWord,prediction_Synonyms = Synonym_Keywords_Generation(prediction_Spell)
+        lst = [prediction_Summ]
+        input_query = lst + prediction_KeyWord
+        return render_template('index.html',ctext=rawtext, prediction_Spell='Did you mean: {}'.format(prediction_Spell),
+        # prediction_Summ = 'Summary: {}' .format(prediction_Summ),
+        # prediction_KeyWord= 'Keywords: {}' .format(prediction_KeyWord),
+        # prediction_Synonyms = 'Synonyms: {}' .format(prediction_Synonyms),
+        prediction_Results = predict_results(input_query))
     
+    # Move the action to crawl the data and train the model
+    '''
+    if condition == 'Y':
+        prediction_Summ, Summ_Scores = bart_summarizer(prediction_Spell)
+        scores , prediction_KeyWord,prediction_Synonyms = Synonym_Keywords_Generation(prediction_Spell)
+        # bring the function of data crawl here
+        # bring the function of training here
+        print('The model is trained and ready to use')
+
+    elif rawtext == 'N':
+        input_query = rawtext
+        predict_results(input_query)
+
+    '''
+    
+    
+    #input_query = prediction_Summ, prediction_KeyWord
 
 
 
     # output = round(prediction[0], 2)
-    return render_template('index.html',ctext=rawtext, prediction_Spell='Did you mean: {}'.format(prediction_Spell),
-    #prediction_Summ = 'Summary: {}' .format(prediction_Summ),
-    #prediction_KeyWord= 'Keywords: {}' .format(prediction_KeyWord),
-    #prediction_Synonyms = 'Synonyms: {}' .format(prediction_Synonyms))
-    prediction_Results = predict_results(prediction_Spell))
+    
 
 
 @app.route('/predict_api',methods=['POST'])
@@ -107,12 +133,15 @@ def predict_api():
     '''
     data = request.get_json(force=True)
     prediction_Spell = SpellCheck2(data)
-    #prediction_Summ, Summ_Scores = bart_summarizer(prediction_Spell)
-    #scores , prediction_KeyWord, prediction_Synonyms = Synonym_Keywords_Generation(prediction_Spell)
+    prediction_Summ, Summ_Scores = bart_summarizer(prediction_Spell)
+    scores , prediction_KeyWord, prediction_Synonyms = Synonym_Keywords_Generation(prediction_Spell)
+    input_query = [prediction_Summ] + prediction_KeyWord
+
     #rawtext = request.form['rawtext']
 	#prediction = SpellCheck2(rawtext)
     # output = prediction
-    return jsonify(prediction_Spell, predict_results(prediction_Spell))# prediction_Summ, prediction_KeyWord, prediction_Synonyms)
+    return jsonify(prediction_Spell, predict_results(input_query))
 
 if __name__ == "__main__":
-     app.run(debug=True)
+
+         app.run(debug=True)
