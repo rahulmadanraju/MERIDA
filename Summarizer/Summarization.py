@@ -8,7 +8,7 @@ Created on Fri May  8 11:30:01 2020
 from transformers import pipeline
 from summarizer import Summarizer, TransformerSummarizer
 from rouge import Rouge
-import pprint
+
 
 rouge = Rouge()
 
@@ -52,3 +52,6 @@ def T5_summarizer(data):
     summary = summary_t5[0]['summary_text']
     rouge_scores = rouge.get_scores(summary, data)
     return summary, rouge_scores
+
+
+
